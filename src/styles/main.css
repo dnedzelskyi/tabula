@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+body {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 350px;
+  width: 80%;
+}
+
+header {
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+footer {
+  display: flex;
+  padding: 0;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: end;
+  align-items: center;
+  height: 40px;
+}
+
+header h1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 100;
+}
+
+textarea {
+  height: 80vh;
+  width: 100%;
+  padding: 16px;
+  font-size: 16pt;
+  outline: none;
+  border: 0;
+  border-top: 3px solid #4EA5D9;    
+  border-bottom: 3px solid #4EA5D9;
+  resize: none;
+}
+
+#clock {
+  color: dimgray;
+  padding: 8px 0px;
+}

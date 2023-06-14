@@ -1,0 +1,10 @@
+.cache/
+.parcel-cache/
+dist/
+
+# Node.js
+node_modules/
+
+# TypeScript
+*.js
+*.js.map
