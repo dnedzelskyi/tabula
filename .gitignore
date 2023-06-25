@@ -1,6 +1,5 @@
 .cache/
 .parcel-cache/
-dist/
 
 # Node.js
 node_modules/
