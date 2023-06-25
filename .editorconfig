@@ -1,0 +1,21 @@
+# Top-most EditorConfig file
+root = true
+
+# Applies to all files
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+tab_width = 2
+max_line_length = 80
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# TypeScript files
+[*.ts]
+quote_type = single
+
+
+# HTML files
+[*.html]
+max_line_length = 120
