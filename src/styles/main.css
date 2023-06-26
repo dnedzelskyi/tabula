@@ -2,10 +2,11 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 body {
@@ -46,12 +47,31 @@ textarea {
   font-size: 16pt;
   outline: none;
   border: 0;
-  border-top: 3px solid #4EA5D9;    
-  border-bottom: 3px solid #4EA5D9;
+  border-top: 3px solid #4ea5d9;
+  border-bottom: 3px solid #4ea5d9;
   resize: none;
 }
 
 #clock {
   color: dimgray;
   padding: 8px 0px;
+}
+
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: dimgray;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 104px;
+}
+
+#toast.show {
+  visibility: visible;
 }
