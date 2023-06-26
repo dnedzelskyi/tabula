@@ -14,7 +14,9 @@ export function initClock(outputElementId: string): void {
     second: 'numeric',
   });
 
-  output.innerText = `${dateText} ${timeText} ${date.getHours() < 12 ? 'AM' : 'PM'}`;
+  output.innerText = `${dateText} ${timeText} ${
+    date.getHours() < 12 ? 'AM' : 'PM'
+  }`;
 
   setTimeout(function () {
     initClock(outputElementId);

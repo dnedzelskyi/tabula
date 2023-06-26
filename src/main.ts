@@ -1,11 +1,14 @@
 import { initClock } from './modules/clock';
+import { initNotes } from './modules/notes';
 
 const CONSTANTS = {
-  CLOCK_OUTPUT_ELEMENT_ID: 'clock',
+  CLOCK_MODULE_ELEMENT_ID: 'clock',
+  NOTES_MODULE_ELEMENT_ID: 'notes-module',
 };
 
 export const app = {
   init: () => {
-    initClock(CONSTANTS.CLOCK_OUTPUT_ELEMENT_ID);
+    initNotes(CONSTANTS.NOTES_MODULE_ELEMENT_ID);
+    initClock(CONSTANTS.CLOCK_MODULE_ELEMENT_ID);
   },
 };
