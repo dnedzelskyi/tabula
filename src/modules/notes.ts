@@ -34,7 +34,7 @@ export function initNotes(moduleElementId: string): void {
   notesTextAreaElement.value = readNotes();
 
   // Autosave
-  notesTextAreaElement.addEventListener('input', function (event) {
+  notesTextAreaElement.addEventListener('input', function () {
     isDirty = true;
   });
 

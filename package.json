@@ -4,8 +4,9 @@
   "description": "One more app for taking your daily notes and organizing work right in your browser.",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && mkdir dist 2>NUL && parcel build src/tabula.html --no-source-maps --dist-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run lint && npm run clean && mkdir dist 2>NUL && parcel build src/tabula.html --no-source-maps --dist-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "keywords": [
     "notes",
@@ -19,6 +20,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
     "parcel": "^2.9.1",
     "rimraf": "^5.0.1"
   }
