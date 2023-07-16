@@ -1,4 +1,4 @@
-import { Notification } from './common/notification';
+import { Alert } from './common/alert';
 
 const CONSTANTS = {
   NOTES_STORAGE_KEY: 'tabula.notes',
@@ -45,12 +45,12 @@ export function initNotes(moduleElementId: string): void {
 
     saveNotes(notesTextAreaElement.value);
     isDirty = false;
-
-    Notification.send('Notes successfully saved.');
   }, CONSTANTS.AUTOSAVE_INTERVAL);
 }
 
 function readNotes(): string {
+  Alert.send('Loading notes ...');
+
   // Init storage if needed.
   if (!localStorage.getItem(CONSTANTS.NOTES_STORAGE_KEY)) {
     saveNotes('');
@@ -62,5 +62,7 @@ function readNotes(): string {
 }
 
 function saveNotes(notes: string): void {
+  Alert.send('Saving notes ...');
   localStorage.setItem(CONSTANTS.NOTES_STORAGE_KEY, notes);
+  Alert.send('Notes saved.');
 }
