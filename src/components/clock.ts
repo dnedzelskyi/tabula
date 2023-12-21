@@ -1,54 +1,42 @@
+type State = { timerId: number };
+
+const CONSTANTS = {
+  TAG: 'tabula-clock',
+};
+
 export default class ClockComponent extends HTMLElement {
-  private state: { timerId: number } = { timerId: -1 };
+  private state: State = { timerId: 0 };
   private root: ShadowRoot;
-
-  public static get tagName(): string {
-    return 'tabula-clock';
-  }
-
-  public static register() {
-    if (!customElements.get('ClockComponent')) {
-      customElements.define(ClockComponent.tagName, ClockComponent);
-    }
-  }
-
-  private static createHTML(dateText: string): string {
-    return `
-      <style>
-        span {
-          color: var(--secondary-text-color, inherit);
-          font-size: 0.9em;
-          padding: 8px;
-        }
-      </style>
-      <span>${dateText}</span>
-    `;
-  }
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'closed' });
   }
 
+  public static get tagName(): string {
+    return CONSTANTS.TAG;
+  }
+
   connectedCallback() {
+    this.render();
     const timerId = window.setInterval(this.render.bind(this), 1000);
     this.state = { ...this.state, timerId };
   }
 
   disconnectedCallback() {
     window.clearInterval(this.state.timerId);
-    this.state = { ...this.state, timerId: -1 };
+    this.state = { ...this.state, timerId: 0 };
   }
 
-  render() {
-    const dateText = this.parseDate(new Date());
-    const output = this.root.querySelector('span');
-
-    if (output) {
-      output.innerHTML = dateText;
-    } else {
-      this.root.innerHTML = ClockComponent.createHTML(dateText);
+  private render() {
+    if (!this.root.hasChildNodes()) {
+      this.root.innerHTML = ClockComponent.createHTML();
     }
+
+    const dateText = this.parseDate(new Date());
+    const output = this.root.querySelector('#clock')!;
+
+    output.innerHTML = dateText;
   }
 
   private parseDate(value: Date): string {
@@ -62,5 +50,24 @@ export default class ClockComponent extends HTMLElement {
     });
 
     return `${date} ${time} ${period}`;
+  }
+
+  public static register() {
+    if (!customElements.get(ClockComponent.tagName)) {
+      customElements.define(ClockComponent.tagName, ClockComponent);
+    }
+  }
+
+  private static createHTML(): string {
+    return `
+      <style>
+        span {
+          color: var(--secondary-text-color, inherit);
+          font-size: 0.9em;
+          padding: 8px;
+        }
+      </style>
+      <span id="clock"></span>
+    `;
   }
 }

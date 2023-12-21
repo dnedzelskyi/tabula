@@ -1,5 +1,3 @@
-import { Alert } from './common/alert';
-
 const CONSTANTS = {
   NOTES_STORAGE_KEY: 'tabula.notes',
   TEXTAREA_PLACEHOLDER: 'Enter your notes here.',
@@ -8,7 +6,10 @@ const CONSTANTS = {
 
 let isDirty = false;
 
-export function initNotes(moduleElementId: string): void {
+export function initNotes(
+  moduleElementId: string,
+  sendAlert: (message: string) => void
+): void {
   const module = document.getElementById(moduleElementId);
 
   if (!module) {
@@ -31,7 +32,7 @@ export function initNotes(moduleElementId: string): void {
   notesTextAreaElement.placeholder = CONSTANTS.TEXTAREA_PLACEHOLDER;
 
   // Init data
-  notesTextAreaElement.value = readNotes();
+  notesTextAreaElement.value = readNotes(sendAlert);
 
   // Autosave
   notesTextAreaElement.addEventListener('input', function () {
@@ -43,17 +44,17 @@ export function initNotes(moduleElementId: string): void {
       return;
     }
 
-    saveNotes(notesTextAreaElement.value);
+    saveNotes(notesTextAreaElement.value, sendAlert);
     isDirty = false;
   }, CONSTANTS.AUTOSAVE_INTERVAL);
 }
 
-function readNotes(): string {
-  Alert.send('Loading notes ...');
+function readNotes(sendAlert: (message: string) => void): string {
+  sendAlert('Loading notes ...');
 
   // Init storage if needed.
   if (!localStorage.getItem(CONSTANTS.NOTES_STORAGE_KEY)) {
-    saveNotes('');
+    saveNotes('', sendAlert);
   }
 
   const notes: string = localStorage.getItem(CONSTANTS.NOTES_STORAGE_KEY) ?? '';
@@ -61,8 +62,8 @@ function readNotes(): string {
   return notes;
 }
 
-function saveNotes(notes: string): void {
-  Alert.send('Saving notes ...');
+function saveNotes(notes: string, sendAlert: (message: string) => void): void {
+  sendAlert('Saving notes ...');
   localStorage.setItem(CONSTANTS.NOTES_STORAGE_KEY, notes);
-  Alert.send('Notes saved.');
+  sendAlert('Notes saved.');
 }

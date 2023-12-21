@@ -1,3 +1,4 @@
 import ClockComponent from './clock';
+import AlertComponent from './alert';
 
-export { ClockComponent };
+export { ClockComponent, AlertComponent };

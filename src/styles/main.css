@@ -88,10 +88,7 @@ header h1:first-child::first-letter {
   border: 4px solid var(--background-color);
 }
 
-#alert {
-  color: var(--secondary-text-color);
+#app-alert {
   flex-grow: 1;
   justify-self: left;
-  font-size: 1.1em;
-  padding: 8px 0px;
 }
