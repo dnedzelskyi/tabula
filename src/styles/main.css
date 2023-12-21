@@ -95,9 +95,3 @@ header h1:first-child::first-letter {
   font-size: 1.1em;
   padding: 8px 0px;
 }
-
-#clock {
-  color: var(--secondary-text-color);
-  font-size: 0.9em;
-  padding: 8px 0px;
-}
