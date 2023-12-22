@@ -55,18 +55,6 @@ header h1:first-child::first-letter {
   vertical-align: 4px;
 }
 
-#notes-module > textarea {
-  height: 80vh;
-  width: 100%;
-  padding: 16px;
-  font-size: 1.5em;
-  outline: none;
-  border: 0;
-  border-top: 2px dotted var(--secondary-color);
-  border-bottom: 2px dotted var(--secondary-color);
-  resize: none;
-}
-
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary-color) var(--background-color);
@@ -88,7 +76,7 @@ header h1:first-child::first-letter {
   border: 4px solid var(--background-color);
 }
 
-#app-alert {
+tabula-alert {
   flex-grow: 1;
   justify-self: left;
 }
