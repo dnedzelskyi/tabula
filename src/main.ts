@@ -1,19 +1,26 @@
-import { initNotes } from './modules/notes';
 import { ClockComponent, AlertComponent } from './components';
+import { initNotes } from './modules/notes';
+import { StorageService } from './services/storage';
+import TabulaApp from './modules/application';
+import { AlertUserEvent } from './modules/events/alert';
 
 const CONSTANTS = {
   NOTES_MODULE_ELEMENT_ID: 'notes-module',
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  ClockComponent.register();
-  AlertComponent.register();
+  const app = TabulaApp.builder
+    .registerComponents([ClockComponent, AlertComponent])
+    .registerService(StorageService, new StorageService(window.localStorage))
+    .create();
 
-  const appAlert = document.getElementById('app-alert') as AlertComponent;
-  initNotes(CONSTANTS.NOTES_MODULE_ELEMENT_ID, (message: string) => {
-    if (!appAlert) {
-      return;
+  app.addEventListener(AlertUserEvent.typeName, (event) => {
+    const appAlert = document.getElementById('app-alert') as AlertComponent;
+    if (appAlert) {
+      const userEvent = event as AlertUserEvent;
+      appAlert.broadcast(userEvent.detail.alertMessage);
     }
-    appAlert.broadcast(message);
   });
+
+  initNotes(CONSTANTS.NOTES_MODULE_ELEMENT_ID, app);
 });

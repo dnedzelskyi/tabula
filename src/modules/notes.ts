@@ -1,15 +1,15 @@
+import { StorageKey, StorageService } from '../services/storage';
+import App from './application';
+import { AlertUserEvent } from './events/alert';
+
 const CONSTANTS = {
-  NOTES_STORAGE_KEY: 'tabula.notes',
   TEXTAREA_PLACEHOLDER: 'Enter your notes here.',
   AUTOSAVE_INTERVAL: 15000,
 };
 
 let isDirty = false;
 
-export function initNotes(
-  moduleElementId: string,
-  sendAlert: (message: string) => void
-): void {
+export function initNotes(moduleElementId: string, app: App): void {
   const module = document.getElementById(moduleElementId);
 
   if (!module) {
@@ -32,7 +32,7 @@ export function initNotes(
   notesTextAreaElement.placeholder = CONSTANTS.TEXTAREA_PLACEHOLDER;
 
   // Init data
-  notesTextAreaElement.value = readNotes(sendAlert);
+  notesTextAreaElement.value = readNotes(app);
 
   // Autosave
   notesTextAreaElement.addEventListener('input', function () {
@@ -44,26 +44,30 @@ export function initNotes(
       return;
     }
 
-    saveNotes(notesTextAreaElement.value, sendAlert);
+    saveNotes(notesTextAreaElement.value, app);
     isDirty = false;
   }, CONSTANTS.AUTOSAVE_INTERVAL);
 }
 
-function readNotes(sendAlert: (message: string) => void): string {
-  sendAlert('Loading notes ...');
+function readNotes(app: App): string {
+  const storage = app.resolveService(StorageService)!;
+
+  app.dispatchEvent(AlertUserEvent.create('Loading notes ...'));
 
   // Init storage if needed.
-  if (!localStorage.getItem(CONSTANTS.NOTES_STORAGE_KEY)) {
-    saveNotes('', sendAlert);
+  if (!storage.read(StorageKey.NOTES_STORAGE_KEY)) {
+    saveNotes('', app);
   }
 
-  const notes: string = localStorage.getItem(CONSTANTS.NOTES_STORAGE_KEY) ?? '';
+  const notes: string = storage.read(StorageKey.NOTES_STORAGE_KEY) ?? '';
 
   return notes;
 }
 
-function saveNotes(notes: string, sendAlert: (message: string) => void): void {
-  sendAlert('Saving notes ...');
-  localStorage.setItem(CONSTANTS.NOTES_STORAGE_KEY, notes);
-  sendAlert('Notes saved.');
+function saveNotes(notes: string, app: App): void {
+  const storage = app.resolveService(StorageService)!;
+
+  app.dispatchEvent(AlertUserEvent.create('Saving notes ...'));
+  storage.write(StorageKey.NOTES_STORAGE_KEY, notes);
+  app.dispatchEvent(AlertUserEvent.create('Notes saved.'));
 }
