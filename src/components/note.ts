@@ -102,6 +102,10 @@ export default class NoteComponent extends HTMLElement {
   private static createHTML(): string {
     return `
       <style>
+        * {
+          box-sizing: border-box;
+        }
+
         textarea {
           height: 80vh;
           width: 100%;
@@ -114,6 +118,7 @@ export default class NoteComponent extends HTMLElement {
           resize: none;
           color: var(--primary-text-color);
         }
+
         * {
           scrollbar-width: thin;
           scrollbar-color: var(--secondary-color) var(--background-color);

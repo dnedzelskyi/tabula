@@ -59,3 +59,9 @@ tabula-alert {
   flex-grow: 1;
   justify-self: left;
 }
+
+@media screen and (width <= 500px) and (height <= 1000px) {
+  tabula-clock {
+    display: none;
+  }
+}

@@ -117,6 +117,9 @@ export default class AlertComponent extends HTMLElement {
   private static createHTML(): string {
     return `
       <style>
+        * {
+          box-sizing: border-box;
+        }
         code {
           color: var(--secondary-text-color, initial);
           font-size: 1.1em;

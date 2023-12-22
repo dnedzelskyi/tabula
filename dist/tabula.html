@@ -1,5 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>Tabula</title><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>*{box-sizing:border-box}:root{--primary-color:#af1c1c9e;--secondary-color:#e9dddb;--primary-text-color:#000b29;--secondary-text-color:#626d71b1;--background-color:#fff}html,body{color:var(--primary-text-color);margin:0;padding:0;font-family:Verdana,Geneva,Tahoma,sans-serif}body{min-width:350px;width:80%;margin-left:auto;margin-right:auto}header{height:80px;justify-content:space-between;align-items:center;padding:0;display:flex}footer{height:40px;flex-wrap:wrap;justify-content:end;align-items:center;gap:8px;padding:0;display:flex}header h1{margin:0;padding:0;font-weight:50}header h1:first-child:first-letter{color:var(--primary-color);vertical-align:4px;font-size:1em}tabula-alert{flex-grow:1;justify-self:left}</style><script type="module" defer>var e;const t={TAG:"tabula-clock"};class r extends HTMLElement{constructor(){super(),this.state={timerId:0},this.root=this.attachShadow({mode:"closed"})}static get tagName(){return t.TAG}connectedCallback(){this.render();let e=window.setInterval(this.render.bind(this),1e3);this.state={...this.state,timerId:e}}disconnectedCallback(){window.clearInterval(this.state.timerId),this.state={...this.state,timerId:0}}render(){this.root.hasChildNodes()||(this.root.innerHTML=r.createHTML());let e=this.parseDate(new Date),t=this.root.querySelector("#clock");t.innerHTML=e}parseDate(e){let t=e.toLocaleDateString(),r=12>e.getHours()?"AM":"PM",s=e.toLocaleTimeString("en-US",{hour12:!1,hour:"numeric",minute:"numeric",second:"numeric"});return`${t} ${s} ${r}`}static register(){customElements.get(r.tagName)||customElements.define(r.tagName,r)}static createHTML(){return`
+<!DOCTYPE html><html lang="en"><head><title>Tabula</title><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>*{box-sizing:border-box}:root{--primary-color:#af1c1c9e;--secondary-color:#e9dddb;--primary-text-color:#000b29;--secondary-text-color:#626d71b1;--background-color:#fff}html,body{color:var(--primary-text-color);margin:0;padding:0;font-family:Verdana,Geneva,Tahoma,sans-serif}body{min-width:350px;width:80%;margin-left:auto;margin-right:auto}header{height:80px;justify-content:space-between;align-items:center;padding:0;display:flex}footer{height:40px;flex-wrap:wrap;justify-content:end;align-items:center;gap:8px;padding:0;display:flex}header h1{margin:0;padding:0;font-weight:50}header h1:first-child:first-letter{color:var(--primary-color);vertical-align:4px;font-size:1em}tabula-alert{flex-grow:1;justify-self:left}@media screen and (width<=500px) and (height<=1000px){tabula-clock{display:none}}</style><script type="module" defer>var e;const t={TAG:"tabula-clock"};class r extends HTMLElement{constructor(){super(),this.state={timerId:0},this.root=this.attachShadow({mode:"closed"})}static get tagName(){return t.TAG}connectedCallback(){this.render();let e=window.setInterval(this.render.bind(this),1e3);this.state={...this.state,timerId:e}}disconnectedCallback(){window.clearInterval(this.state.timerId),this.state={...this.state,timerId:0}}render(){this.root.hasChildNodes()||(this.root.innerHTML=r.createHTML());let e=this.parseDate(new Date),t=this.root.querySelector("#clock");t.innerHTML=e}parseDate(e){let t=e.toLocaleDateString(),r=12>e.getHours()?"AM":"PM",s=e.toLocaleTimeString("en-US",{hour12:!1,hour:"numeric",minute:"numeric",second:"numeric"});return`${t} ${s} ${r}`}static register(){customElements.get(r.tagName)||customElements.define(r.tagName,r)}static createHTML(){return`
       <style>
+        * {
+          box-sizing: border-box;
+        }
         span {
           color: var(--secondary-text-color, inherit);
           font-size: 0.9em;
@@ -9,6 +12,9 @@
       <span id="clock"></span>
     `}}const s={TAG:"tabula-alert",ATTRIBUTES:["timeout"],DEFAULT_TIMEOUT:2e3};class a extends HTMLElement{constructor(){super(),this.state={alertsQueue:[],broadcastProcessId:0,broadcastTimeout:s.DEFAULT_TIMEOUT},this.root=this.attachShadow({mode:"closed"})}static get tagName(){return s.TAG}static get observedAttributes(){return Object.freeze(s.ATTRIBUTES)}broadcast(e){0!==e.length&&(this.state={...this.state,alertsQueue:[...this.state.alertsQueue,e]},this.state.broadcastProcessId>0||this.render())}connectedCallback(){this.render()}disconnectedCallback(){this.state.broadcastProcessId>0&&window.clearTimeout(this.state.broadcastProcessId)}attributeChangedCallback(e,t,r){if("timeout"===e)this.state={...this.state,broadcastTimeout:Number.parseInt(r)};else throw Error(`Invalid attribute ${e} for <${a.tagName}> element.`)}render(){this.root.hasChildNodes()||(this.root.innerHTML=a.createHTML());let e=this.root.querySelector("#alert"),t=this.state.alertsQueue[0];if(this.state={...this.state,alertsQueue:[...this.state.alertsQueue.slice(1)]},!t?.length){this.state={...this.state,broadcastProcessId:0},e.innerHTML="";return}e.innerHTML=t;let r=window.setTimeout(this.render.bind(this),this.state.broadcastTimeout);this.state={...this.state,broadcastProcessId:r}}static register(){customElements.get(a.tagName)||customElements.define(a.tagName,a)}static createHTML(){return`
       <style>
+        * {
+          box-sizing: border-box;
+        }
         code {
           color: var(--secondary-text-color, initial);
           font-size: 1.1em;
@@ -18,6 +24,10 @@
       <code id="alert"></code>
     `}}const o={TAG:"tabula-note",ATTRIBUTES:["placeholder"]};class i extends HTMLElement{constructor(){super(),this.state={placeholder:"",value:""},this.root=this.attachShadow({mode:"closed"}),this.handleInput=this.handleInput.bind(this)}get value(){return this.textareaElement.value}set value(e){this.state.value!==e&&(this.state={...this.state,value:e},this.render())}get textareaElement(){return this.root.querySelector("#note")}static get tagName(){return o.TAG}static get observedAttributes(){return Object.freeze(o.ATTRIBUTES)}connectedCallback(){this.render(),this.textareaElement.addEventListener("input",this.handleInput)}disconnectedCallback(){this.textareaElement.removeEventListener("input",this.handleInput)}attributeChangedCallback(e,t,r){if("placeholder"===e)this.state={...this.state,placeholder:r};else throw Error(`Invalid attribute ${e} for <${i.tagName}> element.`)}render(){this.root.hasChildNodes()||(this.root.innerHTML=i.createHTML()),this.textareaElement.placeholder=this.state.placeholder,this.textareaElement.value=this.state.value}handleInput(){this.dispatchEvent(new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:this.value}}))}static register(){customElements.get(i.tagName)||customElements.define(i.tagName,i)}static createHTML(){return`
       <style>
+        * {
+          box-sizing: border-box;
+        }
+
         textarea {
           height: 80vh;
           width: 100%;
@@ -30,6 +40,7 @@
           resize: none;
           color: var(--primary-text-color);
         }
+
         * {
           scrollbar-width: thin;
           scrollbar-color: var(--secondary-color) var(--background-color);

@@ -61,6 +61,9 @@ export default class ClockComponent extends HTMLElement {
   private static createHTML(): string {
     return `
       <style>
+        * {
+          box-sizing: border-box;
+        }
         span {
           color: var(--secondary-text-color, inherit);
           font-size: 0.9em;
