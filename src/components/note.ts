@@ -112,6 +112,28 @@ export default class NoteComponent extends HTMLElement {
           border-top: 2px dotted var(--secondary-color);
           border-bottom: 2px dotted var(--secondary-color);
           resize: none;
+          color: var(--primary-text-color);
+        }
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: var(--secondary-color) var(--background-color);
+        }
+
+        *::-webkit-scrollbar {
+          cursor: pointer;
+          width: 16px;
+          height: 4px;
+        }
+
+        *::-webkit-scrollbar-track {
+          background: var(--background-color);
+        }
+
+        *::-webkit-scrollbar-thumb {
+          background-color: var(--secondary-color);
+          height: 8px;
+          border-radius: 4px;
+          border: 4px solid var(--background-color);
         }
       </style>
       <section>
