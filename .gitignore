@@ -1,4 +1,6 @@
+# Folders
 .cache/
+.DS_Store
 .parcel-cache/
 
 # Node.js
