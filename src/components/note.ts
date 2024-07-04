@@ -1,14 +1,16 @@
+import { WebComponentStaticMembers } from "./types/common";
+
 type State = {
   placeholder: string;
   value: string;
 };
 
-const CONSTANTS = {
-  TAG: 'tabula-note',
-  ATTRIBUTES: ['placeholder'],
-};
+const NoteComponent = class NoteComponent extends HTMLElement {
+  private static CONSTANTS = {
+    TAG: 'tabula-note',
+    ATTRIBUTES: ['placeholder'],
+  };
 
-export default class NoteComponent extends HTMLElement {
   private root: ShadowRoot;
   private state: State = {
     placeholder: '',
@@ -18,13 +20,11 @@ export default class NoteComponent extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'closed' });
-    this.handleInput = this.handleInput.bind(this);
   }
 
   get value(): string {
     return this.textareaElement.value;
   }
-
   set value(newValue: string) {
     if (this.state.value === newValue) {
       return;
@@ -41,19 +41,19 @@ export default class NoteComponent extends HTMLElement {
   }
 
   static get tagName(): string {
-    return CONSTANTS.TAG;
+    return NoteComponent.CONSTANTS.TAG;
   }
   static get observedAttributes() {
-    return Object.freeze(CONSTANTS.ATTRIBUTES);
+    return Object.freeze(NoteComponent.CONSTANTS.ATTRIBUTES);
   }
 
   connectedCallback() {
     this.render();
-    this.textareaElement.addEventListener('input', this.handleInput);
+    this.textareaElement.addEventListener('input', () => this.handleInput());
   }
 
   disconnectedCallback() {
-    this.textareaElement.removeEventListener('input', this.handleInput);
+    this.textareaElement.removeEventListener('input', () => this.handleInput());
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +81,7 @@ export default class NoteComponent extends HTMLElement {
     this.textareaElement.value = this.state.value;
   }
 
-  handleInput() {
+  private handleInput() {
     this.dispatchEvent(
       new CustomEvent('input', {
         bubbles: true,
@@ -93,7 +93,7 @@ export default class NoteComponent extends HTMLElement {
     );
   }
 
-  public static register() {
+  static register() {
     if (!customElements.get(NoteComponent.tagName)) {
       customElements.define(NoteComponent.tagName, NoteComponent);
     }
@@ -146,4 +146,6 @@ export default class NoteComponent extends HTMLElement {
       </section>
     `;
   }
-}
+} satisfies WebComponentStaticMembers;
+
+export default NoteComponent;

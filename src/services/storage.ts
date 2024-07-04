@@ -10,6 +10,6 @@ export class StorageService {
   }
 
   write(key: StorageKey, value: string) {
-    localStorage.setItem(key, value);
+    this.storageProvider.setItem(key, value);
   }
 }

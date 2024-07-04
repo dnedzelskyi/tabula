@@ -1,21 +1,22 @@
+import { WebComponentStaticMembers } from "./types/common";
+
 type State = {
   alertsQueue: string[];
   broadcastProcessId: number;
   broadcastTimeout: number;
 };
 
-const CONSTANTS = {
-  TAG: 'tabula-alert',
-  ATTRIBUTES: ['timeout'],
-  DEFAULT_TIMEOUT: 2000,
-};
-
-export default class AlertComponent extends HTMLElement {
+const AlertComponent = class AlertComponent extends HTMLElement {
+  private static CONSTANTS = {
+    TAG: 'tabula-alert',
+    ATTRIBUTES: ['timeout'],
+    DEFAULT_TIMEOUT: 2000,
+  };
   private root: ShadowRoot;
   private state: State = {
     alertsQueue: [],
     broadcastProcessId: 0,
-    broadcastTimeout: CONSTANTS.DEFAULT_TIMEOUT,
+    broadcastTimeout: AlertComponent.CONSTANTS.DEFAULT_TIMEOUT,
   };
 
   constructor() {
@@ -24,10 +25,10 @@ export default class AlertComponent extends HTMLElement {
   }
 
   static get tagName(): string {
-    return CONSTANTS.TAG;
+    return AlertComponent.CONSTANTS.TAG;
   }
   static get observedAttributes() {
-    return Object.freeze(CONSTANTS.ATTRIBUTES);
+    return Object.freeze(AlertComponent.CONSTANTS.ATTRIBUTES);
   }
 
   broadcast(message: string) {
@@ -102,13 +103,13 @@ export default class AlertComponent extends HTMLElement {
 
     // Process next.
     const broadcastProcessId = window.setTimeout(
-      this.render.bind(this),
+      () => this.render(),
       this.state.broadcastTimeout
     );
     this.state = { ...this.state, broadcastProcessId };
   }
 
-  public static register() {
+  static register() {
     if (!customElements.get(AlertComponent.tagName)) {
       customElements.define(AlertComponent.tagName, AlertComponent);
     }
@@ -129,4 +130,7 @@ export default class AlertComponent extends HTMLElement {
       <code id="alert"></code>
     `;
   }
-}
+} satisfies WebComponentStaticMembers;
+
+
+export default AlertComponent;

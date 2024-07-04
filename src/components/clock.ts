@@ -1,10 +1,12 @@
+import { WebComponentStaticMembers } from "./types/common";
+
 type State = { timerId: number };
 
-const CONSTANTS = {
-  TAG: 'tabula-clock',
-};
+const ClockComponent = class ClockComponent extends HTMLElement {
+  private static CONSTANTS = {
+    TAG: 'tabula-clock',
+  };
 
-export default class ClockComponent extends HTMLElement {
   private state: State = { timerId: 0 };
   private root: ShadowRoot;
 
@@ -13,13 +15,16 @@ export default class ClockComponent extends HTMLElement {
     this.root = this.attachShadow({ mode: 'closed' });
   }
 
-  public static get tagName(): string {
-    return CONSTANTS.TAG;
+  static get tagName(): string {
+    return ClockComponent.CONSTANTS.TAG;
   }
 
   connectedCallback() {
     this.render();
-    const timerId = window.setInterval(this.render.bind(this), 1000);
+    const timerId = window.setInterval(
+      () => this.render(),
+      1000
+    );
     this.state = { ...this.state, timerId };
   }
 
@@ -52,7 +57,7 @@ export default class ClockComponent extends HTMLElement {
     return `${date} ${time} ${period}`;
   }
 
-  public static register() {
+  static register() {
     if (!customElements.get(ClockComponent.tagName)) {
       customElements.define(ClockComponent.tagName, ClockComponent);
     }
@@ -73,4 +78,7 @@ export default class ClockComponent extends HTMLElement {
       <span id="clock"></span>
     `;
   }
-}
+} satisfies WebComponentStaticMembers;
+
+
+export default ClockComponent;
