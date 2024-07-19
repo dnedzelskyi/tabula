@@ -11,7 +11,7 @@ export default class NotesModule {
         MSG_SAVING: 'Saving notes ...',
         MSG_SAVED: 'Notes saved.'
     };
-    
+
     private isDirty: boolean = false;
 
     private get noteComponent() {
@@ -25,14 +25,25 @@ export default class NotesModule {
 
     constructor(private app: App) {
         this.noteComponent.value = this.readNotes();
+
+        // Refresh on incoming updates.
+        this.storage.addEventListener('storage', (event: Event) => {
+            if ((event as StorageEvent).key === StorageKey.NOTES_STORAGE_KEY) {
+                this.noteComponent.value = this.readNotes();
+            }
+        });
+
+        // Mark as dirty on edit.
         this.noteComponent.addEventListener(
             'input',
             () => this.isDirty = true
         );
+
+        // Autosave.
         setInterval(
             () => this.autoSaveHandler(),
-            NotesModule.CONSTANTS.AUTO_SAVE_TIMEOUT)
-            ;
+            NotesModule.CONSTANTS.AUTO_SAVE_TIMEOUT
+        );
     }
 
     private readNotes(): string {
