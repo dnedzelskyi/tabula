@@ -1,4 +1,4 @@
-import { WebComponentStaticMembers } from "./types/common";
+import { WebComponentStaticMembers } from './types/common';
 
 type State = { timerId: number };
 
@@ -21,10 +21,7 @@ const ClockComponent = class ClockComponent extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    const timerId = window.setInterval(
-      () => this.render(),
-      1000
-    );
+    const timerId = window.setInterval(() => this.render(), 1000);
     this.state = { ...this.state, timerId };
   }
 
@@ -66,6 +63,9 @@ const ClockComponent = class ClockComponent extends HTMLElement {
   private static createHTML(): string {
     return `
       <style>
+        :host {
+          will-change: transform;
+        }
         * {
           box-sizing: border-box;
         }
@@ -79,6 +79,5 @@ const ClockComponent = class ClockComponent extends HTMLElement {
     `;
   }
 } satisfies WebComponentStaticMembers;
-
 
 export default ClockComponent;
