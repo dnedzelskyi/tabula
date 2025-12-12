@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Tabula</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Author: dnedzelskyi, About: Tabula is a simple quick note-taking app that saves your data right in your browser.">
+  <link rel="icon" type="image/x-icon"
+    href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2xpcGJvYXJkIj48cGF0aCBkPSJNMTYgNGgyYTIgMiAwIDAgMSAyIDJ2MTRhMiAyIDAgMCAxLTIgMkg2YTIgMiAwIDAgMS0yLTJWNmEyIDIgMCAwIDEgMi0yaDIiPjwvcGF0aD48cmVjdCB4PSI4IiB5PSIyIiB3aWR0aD0iOCIgaGVpZ2h0PSI0IiByeD0iMSIgcnk9IjEiPjwvcmVjdD48L3N2Zz4=">
+  <script type="module" crossorigin>(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const r of document.querySelectorAll('link[rel="modulepreload"]'))a(r);new MutationObserver(r=>{for(const s of r)if(s.type==="childList")for(const m of s.addedNodes)m.tagName==="LINK"&&m.rel==="modulepreload"&&a(m)}).observe(document,{childList:!0,subtree:!0});function t(r){const s={};return r.integrity&&(s.integrity=r.integrity),r.referrerPolicy&&(s.referrerPolicy=r.referrerPolicy),r.crossOrigin==="use-credentials"?s.credentials="include":r.crossOrigin==="anonymous"?s.credentials="omit":s.credentials="same-origin",s}function a(r){if(r.ep)return;r.ep=!0;const s=t(r);fetch(r.href,s)}})();const S=class c extends HTMLElement{static CONSTANTS={TAG:"tabula-clock"};state={timerId:0};root;constructor(){super(),this.root=this.attachShadow({mode:"closed"})}static get tagName(){return c.CONSTANTS.TAG}connectedCallback(){this.render();const e=window.setInterval(()=>this.render(),1e3);this.state={...this.state,timerId:e}}disconnectedCallback(){window.clearInterval(this.state.timerId),this.state={...this.state,timerId:0}}render(){this.root.hasChildNodes()||(this.root.innerHTML=c.createHTML());const e=this.parseDate(new Date),t=this.root.querySelector("#clock");t.innerHTML=e}parseDate(e){const t=e.toLocaleDateString(),a=e.getHours()<12?"AM":"PM",r=e.toLocaleTimeString("en-US",{hour12:!1,hour:"numeric",minute:"numeric",second:"numeric"});return`${t} ${r} ${a}`}static register(){customElements.get(c.tagName)||customElements.define(c.tagName,c)}static createHTML(){return`
+      <style>
+        :host {
+          will-change: transform;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        span {
+          color: var(--secondary-text-color, inherit);
+          font-size: 0.9em;
+          padding: 8px;
+        }
+      </style>
+      <span id="clock"></span>
+    `}},T=class o extends HTMLElement{static CONSTANTS={TAG:"tabula-alert",ATTRIBUTES:["timeout"],DEFAULT_TIMEOUT:2e3};root;state={alertsQueue:[],broadcastProcessId:0,broadcastTimeout:o.CONSTANTS.DEFAULT_TIMEOUT};constructor(){super(),this.root=this.attachShadow({mode:"closed"})}static get tagName(){return o.CONSTANTS.TAG}static get observedAttributes(){return Object.freeze(o.CONSTANTS.ATTRIBUTES)}broadcast(e){e.length!==0&&(this.state={...this.state,alertsQueue:[...this.state.alertsQueue,e]},!(this.state.broadcastProcessId>0)&&this.render())}connectedCallback(){this.render()}disconnectedCallback(){this.state.broadcastProcessId>0&&window.clearTimeout(this.state.broadcastProcessId)}attributeChangedCallback(e,t,a){switch(e){case"timeout":this.state={...this.state,broadcastTimeout:Number.parseInt(a)};break;default:throw new Error(`Invalid attribute ${e} for <${o.tagName}> element.`)}}render(){this.root.hasChildNodes()||(this.root.innerHTML=o.createHTML());const e=this.root.querySelector("#alert"),t=this.state.alertsQueue[0];if(this.state={...this.state,alertsQueue:[...this.state.alertsQueue.slice(1)]},!t?.length){this.state={...this.state,broadcastProcessId:0},e.innerHTML="";return}e.innerHTML=t;const a=window.setTimeout(()=>this.render(),this.state.broadcastTimeout);this.state={...this.state,broadcastProcessId:a}}static register(){customElements.get(o.tagName)||customElements.define(o.tagName,o)}static createHTML(){return`
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        code {
+          color: var(--secondary-text-color, initial);
+          font-size: 1.1em;
+          padding: 8px;
+        }
+      </style>
+      <code id="alert"></code>
+    `}},g=class i extends HTMLElement{static CONSTANTS={TAG:"tabula-note",ATTRIBUTES:["placeholder"]};root;state={placeholder:"",value:""};constructor(){super(),this.root=this.attachShadow({mode:"closed"})}get value(){return this.textareaElement.value}set value(e){this.state.value!==e&&(this.state={...this.state,value:e},this.render())}get textareaElement(){return this.root.querySelector("#note")}static get tagName(){return i.CONSTANTS.TAG}static get observedAttributes(){return Object.freeze(i.CONSTANTS.ATTRIBUTES)}connectedCallback(){this.render(),this.textareaElement.addEventListener("input",()=>this.handleInput())}disconnectedCallback(){this.textareaElement.removeEventListener("input",()=>this.handleInput())}attributeChangedCallback(e,t,a){switch(e){case"placeholder":this.state={...this.state,placeholder:a};break;default:throw new Error(`Invalid attribute ${e} for <${i.tagName}> element.`)}}render(){this.root.hasChildNodes()||(this.root.innerHTML=i.createHTML()),this.textareaElement.placeholder=this.state.placeholder,this.textareaElement.value=this.state.value}handleInput(){this.dispatchEvent(new CustomEvent("input",{bubbles:!0,composed:!0,detail:{value:this.value}}))}static register(){customElements.get(i.tagName)||customElements.define(i.tagName,i)}static createHTML(){return`
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+
+        textarea {
+          height: 80vh;
+          width: 100%;
+          padding: 16px;
+          font-size: 1.5em;
+          outline: none;
+          border: 0;
+          border-top: 2px dotted var(--secondary-color);
+          border-bottom: 2px dotted var(--secondary-color);
+          resize: none;
+          color: var(--primary-text-color);
+        }
+
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: var(--secondary-color) var(--background-color);
+        }
+
+        *::-webkit-scrollbar {
+          cursor: pointer;
+          width: 16px;
+          height: 4px;
+        }
+
+        *::-webkit-scrollbar-track {
+          background: var(--background-color);
+        }
+
+        *::-webkit-scrollbar-thumb {
+          background-color: var(--secondary-color);
+          height: 8px;
+          border-radius: 4px;
+          border: 4px solid var(--background-color);
+        }
+      </style>
+      <section>
+        <textarea id="note"></textarea>
+      </section>
+    `}};var u=(d=>(d.NOTES_STORAGE_KEY="tabula.notes",d))(u||{});class p extends EventTarget{constructor(e){super(),this.storageProvider=e,window.addEventListener("storage",t=>this.dispatchEvent(new StorageEvent("storage",{key:t.key,oldValue:t.oldValue,newValue:t.newValue,url:t.url,storageArea:t.storageArea})))}read(e){return this.storageProvider.getItem(e)}write(e,t){this.storageProvider.setItem(e,t)}}class n extends CustomEvent{static typeName="notify-user";constructor(e){super(n.typeName,e)}static create(e){return new n({detail:{alertMessage:e}})}}class b{get alertComponent(){return document?.querySelector(T.tagName)}constructor(e){e.addEventListener(n.typeName,t=>this.onNotifyUserHandler(t))}onNotifyUserHandler(e){if(!this.alertComponent)return;const t=e;this.alertComponent.broadcast(t.detail.alertMessage)}}class l{constructor(e){this.app=e,this.noteComponent.value=this.readNotes(),this.storage.addEventListener("storage",t=>{t.key===u.NOTES_STORAGE_KEY&&(this.noteComponent.value=this.readNotes())}),this.noteComponent.addEventListener("input",()=>this.isDirty=!0),setInterval(()=>this.autoSaveHandler(),l.CONSTANTS.AUTO_SAVE_TIMEOUT)}static CONSTANTS={AUTO_SAVE_TIMEOUT:15e3,MSG_LOADING:"Loading notes ...",MSG_SAVING:"Saving notes ...",MSG_SAVED:"Notes saved."};isDirty=!1;get noteComponent(){return document.querySelector(g.tagName)}get storage(){return this.app.resolveService(p)}readNotes(){return this.app.dispatchEvent(n.create(l.CONSTANTS.MSG_LOADING)),this.storage.read(u.NOTES_STORAGE_KEY)||this.saveNotes(""),this.storage.read(u.NOTES_STORAGE_KEY)??""}saveNotes(e){this.app.dispatchEvent(n.create(l.CONSTANTS.MSG_SAVING)),this.storage.write(u.NOTES_STORAGE_KEY,e),this.app.dispatchEvent(n.create(l.CONSTANTS.MSG_SAVED))}autoSaveHandler(){this.isDirty&&(this.saveNotes(this.noteComponent.value),this.isDirty=!1)}}class h extends EventTarget{constructor(e){super(),this.services=e}static AppBuilder=class{services=new Map;registerComponents(e){return e.forEach(t=>t.register()),this}registerService(e,t){return this.services.set(e,t),this}create(){return new h(this.services)}};static get builder(){return new h.AppBuilder}resolveService(e){return this.services.get(e)??null}run(){new b(this),new l(this)}}document.addEventListener("DOMContentLoaded",async()=>{h.builder.registerComponents([g,S,T]).registerService(p,new p(window.localStorage)).create().run()});</script>
+  <style rel="stylesheet" crossorigin>*{box-sizing:border-box}:root{--primary-color: #af1c1c9e;--secondary-color: #e9dddb;--primary-text-color: #000b29;--secondary-text-color: #626d71b1;--background-color: #ffffff}html,body{margin:0;padding:0;font-family:Verdana,Geneva,Tahoma,sans-serif;color:var(--primary-text-color)}body{margin-left:auto;margin-right:auto;min-width:350px;width:80%}header{display:flex;padding:0;justify-content:space-between;align-items:center;height:80px}footer{display:flex;padding:0;gap:8px;flex-wrap:wrap;justify-content:end;align-items:center;height:40px}header h1{margin:0;padding:0;font-weight:50}header h1:first-child:first-letter{color:var(--primary-color);font-size:1em;vertical-align:4px}tabula-alert{flex-grow:1;justify-self:left}@media screen and (max-width:500px)and (max-height:1000px){tabula-clock{display:none}}</style>
+</head>
+
+<body>
+  <header>
+    <h1>[T]abula</h1>
+  </header>
+  <main>
+    <tabula-note placeholder="Enter your notes here."></tabula-note>
+  </main>
+  <footer>
+    <tabula-alert></tabula-alert>
+    <tabula-clock></tabula-clock>
+  </footer>
+</body>
+
+</html>

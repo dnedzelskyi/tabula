@@ -1,3 +1,4 @@
+import './styles/main.css';
 import { ClockComponent, AlertComponent, NoteComponent } from './components';
 import { StorageService } from './services/storage';
 import TabulaApp from './modules/application';

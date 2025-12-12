@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "ES6",
-    "lib": ["DOM", "DOM.Iterable", "ES6"],
-    "moduleResolution": "Node",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
     "strict": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "tests//*.ts", "vite.config.ts"],
   "exclude": ["node_modules"]
 }

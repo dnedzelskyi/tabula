@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 import { StorageKey, StorageService } from '../../src/services/storage';
 
 describe('StorageService Test Suite.', () => {

@@ -1,3 +1,6 @@
+.vscode/
+coverage/
+
 # Folders
 .cache/
 .DS_Store
