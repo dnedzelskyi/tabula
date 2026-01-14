@@ -7,7 +7,7 @@ Just HTML, JavaScript, and browser capabilities. So it can be stored and then us
 ## Latest Release
 
 Find the latest by following
-**[Tabula](https://dnedzelskyi.github.io/tabula/dist/index.html)** link on GitHub Pages.
+**[Tabula](https://dnedzelskyi.github.io/tabula/index.html)** link on GitHub Pages.
 
 ## Usage
 

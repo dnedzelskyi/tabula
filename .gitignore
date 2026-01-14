@@ -1,10 +1,9 @@
-.vscode/
-coverage/
-
 # Folders
 .cache/
 .DS_Store
-.parcel-cache/
+.vscode/
+coverage/
+dist/
 
 # Node.js
 node_modules/
