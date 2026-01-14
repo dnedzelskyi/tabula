@@ -6,5 +6,20 @@ Just HTML, JavaScript, and browser capabilities. So it can be stored and then us
 
 ## Latest Release
 
-Find lates by following
-**[Tabula](https://dnedzelskyi.github.io/tabula/dist/tabula.html)** link on GitHub Pages.
+Find the latest by following
+**[Tabula](https://dnedzelskyi.github.io/tabula/index.html)** link on GitHub Pages.
+
+## Usage
+
+Run locally
+
+```bash
+  npm i .
+  npm run dev
+```
+
+Build a single-file bundle
+
+```bash
+  npm run build
+```
