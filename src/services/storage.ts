@@ -2,8 +2,14 @@ export enum StorageKey {
   NOTES_STORAGE_KEY = 'tabula.notes',
 }
 
+type StorageProvider = Pick<Storage, 'getItem' | 'setItem'>;
+interface AsyncStorageProvider {
+  getItem(key: string): Promise<string | null>;
+  setItem(key: string, value: string): Promise<void>;
+}
+
 export class StorageService extends EventTarget {
-  constructor(private storageProvider: Storage) {
+  constructor(private storageProvider: StorageProvider | AsyncStorageProvider) {
     super();
 
     // Propagate onchange StorageEvent.
@@ -14,17 +20,17 @@ export class StorageService extends EventTarget {
           oldValue: event.oldValue,
           newValue: event.newValue,
           url: event.url,
-          storageArea: event.storageArea
-        })
-      )
+          storageArea: event.storageArea,
+        }),
+      ),
     );
   }
 
-  read(key: StorageKey): string | null {
+  async read(key: StorageKey): Promise<string | null> {
     return this.storageProvider.getItem(key);
   }
 
-  write(key: StorageKey, value: string) {
-    this.storageProvider.setItem(key, value);
+  async write(key: StorageKey, value: string) {
+    await this.storageProvider.setItem(key, value);
   }
 }
